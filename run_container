@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -x
+
+BASEDIR=${1:-$(pwd)}
+CONTAINER=$(basename $BASEDIR)
+
+docker stop $CONTAINER
+docker rm $CONTAINER
+
+# launch new
+docker run -d \
+--volume ${HOME}/volumes/mame-emscripten:/home/emudev \
+--name $CONTAINER \
+$CONTAINER:latest
+
+docker logs --follow $CONTAINER
